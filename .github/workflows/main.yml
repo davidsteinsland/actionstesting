@@ -1,0 +1,21 @@
+on:
+  push:
+jobs:
+  testa:
+    strategy:
+      matrix:
+        package: ${{ fromJSON('["A", "B", "C"]') }}
+    runs-on: ubuntu-latest
+    steps:
+    # output what you want, the output of package B will be available in needs for furture jobs
+    - run: echo "MyKey=MyOutput" > $GITHUB_OUTPUT
+      id: mystep
+      if: matrix.package != 'B' 
+    outputs:
+      bokstav: ${{ steps.mystep.outputs.mykey || '' }}
+  testb:
+    runs-on: ubuntu-latest
+    needs: testa
+    steps:
+    - run: ${{ tojson(needs) }}
+      shell: cat {0}
