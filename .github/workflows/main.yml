@@ -13,6 +13,7 @@ jobs:
       if: matrix.package != 'B' 
     outputs:
       bokstav: ${{ steps.mystep.outputs.mykey || '' }}
+      ${{ matrix.package }}: ${{ steps.mystep.outputs.mykey || '' }}
   testb:
     runs-on: ubuntu-latest
     needs: testa
